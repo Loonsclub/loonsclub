@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Reveal from "./components/Reveal";
 import Hero from "./components/Hero";
-import ProgramStack from "./components/ProgramStack";
+import ProgramCards from "./components/ProgramCards";
 import SiteFooter from "./components/SiteFooter";
 import { PROGRAMS } from "./lib/programs";
 import WaysToJoin, { type Track } from "./components/WaysToJoin";
@@ -38,23 +38,22 @@ const OFFERS = [
     ),
   },
   {
-    title: "Pitch your idea",
-    body: "Tell the story behind your idea and present it to a panel of founders and investors.",
+    title: "Build your MVP",
+    body: "Make the simplest version that works, put it in front of real users and iterate it from the feedback.",
     icon: (
       <>
-        <rect x="3" y="4" width="18" height="12" rx="1.5" />
-        <path d="M12 16v4M8 20h8M7 12l3-3 2 2 5-5" />
+        <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z" />
+        <path d="M4 7.5l8 4.5 8-4.5M12 12v9" />
       </>
     ),
   },
   {
-    title: "Lead and grow",
-    body: "See how founders build teams, make hard calls and keep going when things get tough.",
+    title: "Go-to-Market",
+    body: "Work out who your first customers are, how to reach them and how to get them to say yes.",
     icon: (
       <>
-        <path d="M4 20h16" />
-        <path d="M5 16l5-5 3 3 6-6" />
-        <path d="M15 8h4v4" />
+        <path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1z" />
+        <path d="M17 9a4 4 0 0 1 0 6M19.5 6.5a7.5 7.5 0 0 1 0 11" />
       </>
     ),
   },
@@ -74,7 +73,7 @@ const TRACKS: Track[] = [
     facts: [
       { label: "Where", value: "Your school premises" },
       { label: "When", value: "Fitted into your school calendar" },
-      { label: "Who", value: "Your students, in teams from their own classes" },
+      { label: "Who", value: "Students from various classes mixed into teams" },
       { label: "What you need", value: "A room, a slot, and a teacher point of contact" },
     ],
     formats: [
@@ -196,7 +195,7 @@ export default function Home() {
                 founders who have done it themselves.
               </p>
             </Reveal>
-            <ProgramStack cards={PROGRAMS} />
+            <ProgramCards programs={PROGRAMS} />
           </div>
         </section>
 
@@ -215,6 +214,13 @@ export default function Home() {
               <p className="mt-6 text-lg leading-relaxed text-muted">
                 Both programs run in two ways. Schools bring us onto their campus; students can also join on their
                 own at weekends.
+              </p>
+              <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-ink/80 shadow-sm ring-1 ring-accent/15">
+                <svg aria-hidden viewBox="0 0 24 24" className="h-4 w-4 text-accent" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2 9l10-5 10 5-10 5L2 9z" />
+                  <path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" />
+                </svg>
+                For students from <span className="text-gradient font-semibold">Class 6 to 12</span>
               </p>
             </Reveal>
             <WaysToJoin tracks={TRACKS} />

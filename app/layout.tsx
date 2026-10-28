@@ -19,13 +19,6 @@ const clamp = localFont({
   display: "swap",
 });
 
-// Cut-out ransom-note face for "Crazy Ones"
-const kaito = localFont({
-  variable: "--font-kaito",
-  src: "../public/PolandCannedIntoKaito-G3ErD.otf",
-  display: "swap",
-});
-
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -43,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${clamp.variable} ${manrope.variable} ${inter.variable} ${kaito.variable} h-full antialiased scroll-smooth`}
+      className={`${clamp.variable} ${manrope.variable} ${inter.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll />

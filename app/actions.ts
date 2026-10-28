@@ -1,5 +1,6 @@
 "use server";
 
+import { hasDatabase, saveEnrollment, savePartnerEnquiry } from "./lib/db";
 import { ENROLL_FIELDS, validateAll, type EnrollErrors, type EnrollField } from "./lib/enroll";
 import {
   PARTNER_FIELDS,
@@ -11,7 +12,7 @@ import {
 
 export type EnrollState =
   | { status: "idle" }
-  | { status: "error"; errors: EnrollErrors }
+  | { status: "error"; errors: EnrollErrors; formError?: string }
   | {
       status: "success";
       orderId: string;
@@ -32,8 +33,22 @@ export async function enroll(_prev: EnrollState, formData: FormData): Promise<En
   // Set when the form was opened from a program page
   const program = String(formData.get("program") ?? "").trim() || null;
 
-  // TODO: persist the enrollment (database, CRM, confirmation email) here.
   const orderId = `LC-${Date.now().toString(36).toUpperCase()}`;
+
+  // TODO: confirmation email.
+  const saved = await persist(() =>
+    saveEnrollment({
+      orderId,
+      studentName: data.studentName.trim(),
+      parentName: data.parentName.trim(),
+      email: data.email.trim(),
+      phone: data.phone.trim(),
+      school: data.school.trim(),
+      grade: data.grade,
+      program,
+    }),
+  );
+  if (!saved) return { status: "error", errors: {}, formError: SAVE_FAILED };
 
   // Hosted payment page, e.g. a Stripe Payment Link. Set PAYMENT_URL in .env.local.
   let paymentUrl: string | null = null;
@@ -56,7 +71,7 @@ export async function enroll(_prev: EnrollState, formData: FormData): Promise<En
 
 export type PartnerState =
   | { status: "idle" }
-  | { status: "error"; errors: PartnerErrors }
+  | { status: "error"; errors: PartnerErrors; formError?: string }
   | { status: "success"; schoolName: string; principalName: string; email: string; interests: string[] };
 
 export async function partner(_prev: PartnerState, formData: FormData): Promise<PartnerState> {
@@ -73,7 +88,17 @@ export async function partner(_prev: PartnerState, formData: FormData): Promise<
     .map(String)
     .filter((i) => (PARTNER_INTERESTS as readonly string[]).includes(i));
 
-  // TODO: persist the enquiry and notify the team (database, CRM, email to info@loonsclub.com) here.
+  // TODO: notify the team (email to info@loonsclub.com).
+  const saved = await persist(() =>
+    savePartnerEnquiry({
+      schoolName: data.schoolName.trim(),
+      principalName: data.principalName.trim(),
+      email: data.email.trim(),
+      phone: data.phone.trim(),
+      interests,
+    }),
+  );
+  if (!saved) return { status: "error", errors: {}, formError: SAVE_FAILED };
 
   return {
     status: "success",
@@ -82,4 +107,21 @@ export async function partner(_prev: PartnerState, formData: FormData): Promise<
     email: data.email.trim(),
     interests,
   };
+}
+
+const SAVE_FAILED = "We couldn't save your details just now. Please try again in a moment.";
+
+// Without a database (e.g. local dev before `vercel env pull`) submissions are logged instead of saved.
+async function persist(save: () => Promise<void>): Promise<boolean> {
+  if (!hasDatabase()) {
+    console.warn("DATABASE_URL is not set; submission was not saved.");
+    return true;
+  }
+  try {
+    await save();
+    return true;
+  } catch (err) {
+    console.error("Failed to save submission", err);
+    return false;
+  }
 }

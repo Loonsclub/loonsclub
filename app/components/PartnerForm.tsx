@@ -149,6 +149,11 @@ export default function PartnerForm() {
         </div>
       </fieldset>
 
+      {state.status === "error" && state.formError && (
+        <p role="alert" className="mt-6 rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+          {state.formError}
+        </p>
+      )}
       <SubmitButton pending={pending} label="Send enquiry" pendingLabel="Sending…" />
       <p className="mt-4 text-center text-xs text-muted">
         No commitment. Prefer email? Write to{" "}

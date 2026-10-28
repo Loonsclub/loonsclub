@@ -53,7 +53,7 @@ export function PartnerPopup({ className, children }: TriggerProps) {
         eyebrow="Partner with us"
         title={
           <>
-            Build the Next Generation of Founders <span className="text-gradient-light">Campus</span>.
+            Build the Next Generation of Founders at your <span className="text-gradient-light">Campus</span>.
           </>
         }
         points={[

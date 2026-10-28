@@ -1,5 +1,3 @@
-import type { ProgramCard } from "../components/ProgramStack";
-
 export type JoinStep = { title: string; detail: string; meta: string };
 
 // One block of the program: a session in the bootcamp, a phase in the year-long program
@@ -11,7 +9,15 @@ export type Session = {
   topics: { title: string; detail: string }[];
 };
 
-export type Program = ProgramCard & {
+export type Program = {
+  eyebrow: string;
+  title: string;
+  body: string;
+  // set to a path in /public; null shows a placeholder
+  image: string | null;
+  imageAlt: string;
+  // the program's own page
+  href?: string;
   slug: string;
   number: string;
   duration: string;
@@ -94,11 +100,6 @@ export const PROGRAMS: Program[] = ([
         ],
       },
     ],
-    agenda: [
-      { title: "Startup Fundamentals", detail: "What founders do, and why startups are built to grow fast." },
-      { title: "A founder's journey", detail: "The real story behind a startup." },
-      { title: "Pitch & Validate", detail: "Shape an idea and pitch it to founders." },
-    ],
   },
   {
     slug: "becoming-entrepreneurial",
@@ -165,26 +166,6 @@ export const PROGRAMS: Program[] = ([
           { title: "Product Market Fit", detail: "Improve until people want it." },
           { title: "Go-to-market", detail: "Reach your first customers." },
         ],
-      },
-    ],
-    agenda: [
-      {
-        time: "Phase 1",
-        title: "Idea & team",
-        detail: "Form a team and pick an idea.",
-        steps: ["Founder mindset", "Ideation", "Co-founders", "Validation", "Ideal Customer Profile"],
-      },
-      {
-        time: "Phase 2",
-        title: "Customer",
-        detail: "Talk to customers and sharpen your offer.",
-        steps: ["Discovery interviews", "Value proposition", "Resilience"],
-      },
-      {
-        time: "Phase 3",
-        title: "Build & launch",
-        detail: "Build a first version and take it to market.",
-        steps: ["MVP", "Product Market Fit", "Go-to-market"],
       },
     ],
   },

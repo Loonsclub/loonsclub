@@ -230,6 +230,11 @@ export default function EnrollForm({ program, bare = false }: { program?: string
         <ErrorText id={`${id("terms")}-error`} message={errorFor("terms")} />
       </div>
 
+      {state.status === "error" && state.formError && (
+        <p role="alert" className="mt-6 rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+          {state.formError}
+        </p>
+      )}
       <SubmitButton pending={pending} label="Enroll and pay" pendingLabel="Reserving your seat…" />
       <p className="mt-4 text-center text-xs text-muted">
         You&apos;ll be taken to our secure payment partner to complete checkout.
