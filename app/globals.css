@@ -287,3 +287,21 @@ body {
     animation: none;
   }
 }
+
+/* Snow drifting down inside the winter program card */
+.snowflake {
+  opacity: 0;
+  animation: snow-fall linear infinite;
+}
+@keyframes snow-fall {
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(10px, 170px, 0);
+  }
+}

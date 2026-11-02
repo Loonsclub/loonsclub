@@ -9,7 +9,7 @@ import {
   type EnrollErrors,
   type EnrollField,
 } from "../lib/enroll";
-import { ErrorText, Field, inputBase, inputBorder, SubmitButton, SuccessMark } from "./form";
+import { Field, inputBase, inputBorder, SubmitButton, SuccessMark } from "./form";
 
 const initialValues: Record<EnrollField, string> = {
   studentName: "",
@@ -18,7 +18,6 @@ const initialValues: Record<EnrollField, string> = {
   phone: "",
   school: "",
   grade: "",
-  terms: "",
 };
 
 const GRADES = ["6", "7", "8", "9", "10", "11", "12"];
@@ -54,14 +53,9 @@ export default function EnrollForm({ program, bare = false }: { program?: string
 
   function onChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const field = e.target.name as EnrollField;
-    const value =
-      e.target instanceof HTMLInputElement && e.target.type === "checkbox"
-        ? e.target.checked
-          ? "on"
-          : ""
-        : e.target.value;
+    const value = e.target.value;
     update(field, value);
-    if (field === "terms" || field === "grade") blur(field, value);
+    if (field === "grade") blur(field, value);
   }
 
   function blur(field: EnrollField, value = values[field]) {
@@ -88,26 +82,12 @@ export default function EnrollForm({ program, bare = false }: { program?: string
           You&apos;re in, {state.studentName.split(" ")[0]}.
         </h3>
         <p className="mt-3 text-muted">
-          We&apos;ve reserved a seat{state.program ? ` in ${state.program}` : ""}. A confirmation will be sent to{" "}
-          <span className="font-medium text-ink">{state.email}</span> once payment is complete.
+          We&apos;ve reserved a seat{state.program ? ` in ${state.program}` : ""}. Our team will be in touch at{" "}
+          <span className="font-medium text-ink">{state.email}</span> soon.
         </p>
         <p className="mt-4 text-sm text-muted">
           Reference: <span className="font-mono text-ink">{state.orderId}</span>
         </p>
-        {state.paymentUrl ? (
-          <a
-            href={state.paymentUrl}
-            className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-accent-gradient px-6 py-4 text-base font-semibold text-white shadow-[0_14px_30px_-12px_rgba(124,58,237,0.7)] transition hover:-translate-y-0.5 hover:brightness-110"
-          >
-            Continue to secure payment
-            <span aria-hidden>→</span>
-          </a>
-        ) : (
-          <p className="mt-8 rounded-xl bg-sand px-4 py-3 text-sm text-muted">
-            Payment link not configured. Set <code className="font-mono">PAYMENT_URL</code> to your hosted
-            checkout page.
-          </p>
-        )}
       </div>
     );
   }
@@ -204,41 +184,12 @@ export default function EnrollForm({ program, bare = false }: { program?: string
         </Field>
       </div>
 
-      <div className="mt-4">
-        <label className="flex cursor-pointer items-start gap-3 text-sm text-muted">
-          <input
-            type="checkbox"
-            name="terms"
-            checked={values.terms === "on"}
-            onChange={onChange}
-            aria-invalid={!!errorFor("terms")}
-            aria-describedby={`${id("terms")}-error`}
-            className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-accent"
-          />
-          <span>
-            I agree to the{" "}
-            <a href="#" className="font-medium text-ink underline decoration-accent/40 underline-offset-4 hover:text-accent hover:decoration-accent">
-              program terms
-            </a>{" "}
-            and{" "}
-            <a href="#" className="font-medium text-ink underline decoration-accent/40 underline-offset-4 hover:text-accent hover:decoration-accent">
-              privacy policy
-            </a>
-            , and confirm I am the student&apos;s parent or guardian.
-          </span>
-        </label>
-        <ErrorText id={`${id("terms")}-error`} message={errorFor("terms")} />
-      </div>
-
       {state.status === "error" && state.formError && (
         <p role="alert" className="mt-6 rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
           {state.formError}
         </p>
       )}
-      <SubmitButton pending={pending} label="Enroll and pay" pendingLabel="Reserving your seat…" />
-      <p className="mt-4 text-center text-xs text-muted">
-        You&apos;ll be taken to our secure payment partner to complete checkout.
-      </p>
+      <SubmitButton pending={pending} label="Enroll" pendingLabel="Reserving your seat…" />
     </form>
   );
 }

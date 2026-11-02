@@ -1,5 +1,18 @@
 export type JoinStep = { title: string; detail: string; meta: string };
 
+// icons drawn by components/program/OutcomeIcon
+export type OutcomeIconName =
+  | "compass"
+  | "growth"
+  | "idea"
+  | "pitch"
+  | "mentor"
+  | "layers"
+  | "mindset"
+  | "product"
+  | "network"
+  | "rocket";
+
 // One block of the program: a session in the bootcamp, a phase in the year-long program
 export type Session = {
   label: string;
@@ -7,9 +20,17 @@ export type Session = {
   title: string;
   summary: string;
   topics: { title: string; detail: string }[];
+  // checkpoint held after the block ends, e.g. the quarterly review closing a phase
+  review?: { title: string; detail: string };
 };
 
+// `number`, `eyebrow` and `href` are filled in below from the program's place in the list
+type ProgramData = Omit<Program, "number" | "eyebrow" | "href">;
+
 export type Program = {
+  // false hides the program from the whole site (cards, its page, forms) but keeps it here
+  active: boolean;
+  // e.g. "Program 01 · 1 year"
   eyebrow: string;
   title: string;
   body: string;
@@ -17,7 +38,7 @@ export type Program = {
   image: string | null;
   imageAlt: string;
   // the program's own page
-  href?: string;
+  href: string;
   slug: string;
   number: string;
   duration: string;
@@ -28,16 +49,17 @@ export type Program = {
   // what the blocks in `sessions` are called
   sessionUnit: "Sessions" | "Phases";
   join: JoinStep[];
-  outcomes: string[];
+  outcomes: { icon: OutcomeIconName; title: string; detail: string }[];
   sessions: Session[];
 };
 
-export const PROGRAMS: Program[] = ([
+// Every program we have ever written up. Only the `active` ones show on the site.
+const ALL_PROGRAMS: ProgramData[] = [
   {
+    // Paused for now. Set `active: true` to bring it back everywhere.
+    active: false,
     slug: "startup-bootcamp",
-    number: "01",
     duration: "1 day",
-    eyebrow: "Program 01 · 1 day",
     title: "Startup Bootcamp",
     tagline: "One day that lights the fuse.",
     body: "Founders walk students through how startups work, then teams come up with an idea and pitch it.",
@@ -49,7 +71,7 @@ export const PROGRAMS: Program[] = ([
       { label: "Duration", value: "One full day" },
       { label: "Where", value: "Your school or IITM Research Park" },
       { label: "Led by", value: "Startup founders" },
-      { label: "You leave with", value: "A pitched idea" },
+      { label: "You leave with", value: "A validated idea" },
     ],
     join: [
       { title: "Save a seat", detail: "Fill in a short form.", meta: "2 minutes" },
@@ -58,10 +80,10 @@ export const PROGRAMS: Program[] = ([
       { title: "Show up", detail: "No experience needed.", meta: "Day one" },
     ],
     outcomes: [
-      "How founders really work",
-      "Startup vs. business",
-      "Your team's own idea",
-      "Your first pitch",
+      { icon: "compass", title: "How founders really work", detail: "What founders actually do, day to day." },
+      { icon: "growth", title: "Startup vs. business", detail: "Why startups are built to grow fast." },
+      { icon: "idea", title: "Your team's own idea", detail: "A real problem, shaped into a solution." },
+      { icon: "pitch", title: "Your first pitch", detail: "Three minutes in front of founders." },
     ],
     sessions: [
       {
@@ -102,10 +124,9 @@ export const PROGRAMS: Program[] = ([
     ],
   },
   {
+    active: true,
     slug: "becoming-entrepreneurial",
-    number: "02",
     duration: "1 year",
-    eyebrow: "Program 02 · 1 year",
     title: "Becoming Entrepreneurial",
     tagline: "A year of actually building.",
     body: "A year taking a real startup from idea to Product Market Fit, with a team and a mentor.",
@@ -114,61 +135,81 @@ export const PROGRAMS: Program[] = ([
     imagePosition: "50% 40%",
     sessionUnit: "Phases",
     facts: [
-      { label: "Duration", value: "One academic year" },
+      { label: "Duration", value: "10-Months" },
       { label: "Where", value: "Your school or IITM Research Park" },
       { label: "Led by", value: "Founders and mentors" },
-      { label: "You leave with", value: "A tested product" },
+      { label: "You leave with", value: "Real-world Startup Experience" },
     ],
     join: [
       { title: "Save a seat", detail: "Fill in a short form.", meta: "2 minutes" },
-      { title: "Intro call", detail: "We explain how the year works.", meta: "Within a week" },
-      { title: "Choose how", detail: "Through school or on weekends.", meta: "School or weekend" },
+      { title: "Intro call", detail: "We explain how the year works, and the admission process.", meta: "Within a week" },
+      { title: "Apply", detail: "Go through the admission process.", meta: "Application" },
       { title: "Meet your team", detail: "Your co-founders and mentor.", meta: "Day one" },
     ],
     outcomes: [
-      "Co-founders you chose",
-      "Real customer conversations",
-      "A first product",
-      "A path to launch",
+      { icon: "mentor", title: "Personalised mentorship", detail: "A mentor who guides your team all year." },
+      { icon: "layers", title: "Startup fundamentals", detail: "Value proposition and the Business Model Canvas." },
+      { icon: "mindset", title: "Entrepreneurial mindset", detail: "Own problems, take risks, learn from failure." },
+      { icon: "product", title: "Product development", detail: "Take an idea all the way to a working product." },
+      { icon: "network", title: "Startup exposure", detail: "Time with founders and the startup ecosystem." },
+      { icon: "rocket", title: "Startup building experience", detail: "A full year building a real startup as a team." },
     ],
     sessions: [
       {
         label: "Phase 1",
         format: "Idea & team",
         title: "Find an idea worth pursuing",
-        summary: "Form a team and pick an idea worth the year.",
+        summary: "Learn the fundamentals, form a team and pick a problem worth the year.",
         topics: [
-          { title: "Founder mindset", detail: "Risk, failure and ownership." },
-          { title: "Ideation", detail: "Many ideas, then the best one." },
-          { title: "Co-founders", detail: "People who cover your gaps." },
-          { title: "Validation", detail: "Is the problem real?" },
-          { title: "Ideal Customer Profile", detail: "Who exactly it's for." },
+          { title: "Orientation", detail: "How the year works, and what it asks of you." },
+          { title: "Startup Fundamentals", detail: "Value proposition and the Business Model Canvas." },
+          { title: "Founder Mindset - I", detail: "Resourcefulness, value proposition and risk." },
+          { title: "Idea Generation", detail: "Spot real problems and choose one worth solving." },
         ],
+        review: { title: "Q1 Customer Discovery review", detail: "Show who your customer is and what you learned from them." },
       },
       {
         label: "Phase 2",
-        format: "Customer",
-        title: "Talk to customers",
-        summary: "Learn what customers need and sharpen your offer.",
+        format: "MVP & fit",
+        title: "Build the MVP",
+        summary: "Build the smallest product that tests your idea, and find out if people want it.",
         topics: [
-          { title: "Discovery interviews", detail: "Questions that reveal real needs." },
-          { title: "Value proposition", detail: "Why it's worth paying for." },
-          { title: "Resilience", detail: "Handling rejection and pivots." },
+          { title: "Thinking Styles", detail: "Explore Creative, Design, and Systems Thinking" },
+          { title: "Building a Minimum Viable Product", detail: "The smallest version that tests your idea." },
+          { title: "Founder Mindset - II", detail: "Psychological capital: hope, resilience and confidence." },
+          { title: "Product Market Fit", detail: "Signs that people truly want what you built." },
         ],
+        review: { title: "Q2 PMF review", detail: "Present the evidence that your product fits its market." },
       },
       {
         label: "Phase 3",
-        format: "Build & launch",
-        title: "Build and launch",
-        summary: "Build a first version and take it to market.",
+        format: "Build & Launch",
+        title: "Go-to-Market",
+        summary: "Sharpen the product, plan the money and take it to market.",
         topics: [
-          { title: "MVP", detail: "The smallest version that works." },
-          { title: "Product Market Fit", detail: "Improve until people want it." },
-          { title: "Go-to-market", detail: "Reach your first customers." },
+          { title: "MVP iteration", detail: "Improve the product from real user feedback." },
+          { title: "Startup Finance", detail: "Costs, pricing and how the numbers add up." },
+          { title: "What is Marketing", detail: "How to reach and win your first customers." },
+          { title: "GTM Plan", detail: "Your plan for launching to market." },
         ],
+        review: { title: "Q3 Demo day", detail: "Pitch your startup to founders and mentors." },
       },
     ],
   },
-] satisfies Program[]).map((p) => ({ ...p, href: `/programs/${p.slug}` }));
+];
+
+const active = ALL_PROGRAMS.filter((p) => p.active);
+
+// What the site shows. Numbers follow the order of the active programs.
+export const PROGRAMS: Program[] = active.map((p, i) => {
+  const number = String(i + 1).padStart(2, "0");
+  return {
+    ...p,
+    number,
+    // a lone program needs no number
+    eyebrow: active.length > 1 ? `Program ${number} · ${p.duration}` : `${p.duration.replace(" ", "-")} program`,
+    href: `/programs/${p.slug}`,
+  };
+});
 
 export const getProgram = (slug: string) => PROGRAMS.find((p) => p.slug === slug);

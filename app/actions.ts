@@ -19,7 +19,6 @@ export type EnrollState =
       studentName: string;
       email: string;
       program: string | null;
-      paymentUrl: string | null;
     };
 
 export async function enroll(_prev: EnrollState, formData: FormData): Promise<EnrollState> {
@@ -50,22 +49,12 @@ export async function enroll(_prev: EnrollState, formData: FormData): Promise<En
   );
   if (!saved) return { status: "error", errors: {}, formError: SAVE_FAILED };
 
-  // Hosted payment page, e.g. a Stripe Payment Link. Set PAYMENT_URL in .env.local.
-  let paymentUrl: string | null = null;
-  if (process.env.PAYMENT_URL) {
-    const url = new URL(process.env.PAYMENT_URL);
-    url.searchParams.set("prefilled_email", data.email.trim());
-    url.searchParams.set("client_reference_id", orderId);
-    paymentUrl = url.toString();
-  }
-
   return {
     status: "success",
     orderId,
     studentName: data.studentName.trim(),
     email: data.email.trim(),
     program,
-    paymentUrl,
   };
 }
 

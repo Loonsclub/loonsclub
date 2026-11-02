@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { adminUrl, isAdminHost } from "./app/lib/admin-host";
 import { ADMIN_COOKIE, verifySessionToken } from "./app/lib/admin-session";
 
 // The public site's hosts; /admin is hidden on these and only served from admin.loonsclub.com
@@ -13,12 +14,18 @@ export async function proxy(request: NextRequest) {
   }
 
   // On admin.<domain>, every path maps into /admin (admin.loonsclub.com/ → /admin)
-  const adminHost = host.startsWith("admin.");
-  const path = adminHost && !isAdminPath(pathname) ? `/admin${pathname === "/" ? "" : pathname}` : pathname;
+  const adminHost = isAdminHost(host);
+  // Keep one URL per page there: admin.loonsclub.com/admin/login → /login
+  if (adminHost && isAdminPath(pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = adminUrl(host, pathname);
+    return NextResponse.redirect(url);
+  }
+  const path = adminHost ? `/admin${pathname === "/" ? "" : pathname}` : pathname;
   if (!isAdminPath(path)) return NextResponse.next();
 
   if (path !== "/admin/login" && !(await verifySessionToken(request.cookies.get(ADMIN_COOKIE)?.value))) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    return NextResponse.redirect(new URL(adminUrl(host, "/admin/login"), request.url));
   }
 
   if (path === pathname) return NextResponse.next();

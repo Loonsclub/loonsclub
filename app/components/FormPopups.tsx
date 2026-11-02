@@ -58,7 +58,8 @@ export function PartnerPopup({ className, children }: TriggerProps) {
         }
         points={[
           "Share your school details.",
-          "Pick the bootcamp, the year-long program, or both.",
+          // two programs: "Pick the bootcamp, the year-long program, or both."
+          "We plan the year around your school calendar.",
           "Founders and mentors run every session on campus.",
         ]}
       >

@@ -24,6 +24,9 @@ create table if not exists partner_enquiries (
   created_at     timestamptz not null default now()
 );
 
+-- Set when an admin marks the enrollment as converted; null means it's on hold
+alter table enrollments add column if not exists converted_at timestamptz;
+
 create index if not exists enrollments_created_at_idx on enrollments (created_at desc);
 create index if not exists partner_enquiries_created_at_idx on partner_enquiries (created_at desc);
 

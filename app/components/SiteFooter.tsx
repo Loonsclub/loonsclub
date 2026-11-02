@@ -27,16 +27,9 @@ export default function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href="tel:+919840012345" className="transition hover:text-cream">
-                  +91 98400 12345
+                <a href="tel:+918248367716" className="transition hover:text-cream">
+                  +91 82483 67716
                 </a>
-              </li>
-              <li className="leading-relaxed">
-                Number, Street,
-                <br />
-                Area, Chennai 600000
-                <br />
-                Tamil Nadu, India
               </li>
             </ul>
           </div>

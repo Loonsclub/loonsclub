@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ADMIN_COOKIE, createSessionToken, safeEqual, SESSION_TTL_SECONDS } from "../lib/admin-session";
+import { adminHref } from "./paths";
 
 export type LoginState = { error?: string };
 
@@ -25,10 +26,10 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
     path: "/",
     maxAge: SESSION_TTL_SECONDS,
   });
-  redirect("/admin");
+  redirect(await adminHref("/admin"));
 }
 
 export async function logout() {
   (await cookies()).delete(ADMIN_COOKIE);
-  redirect("/admin/login");
+  redirect(await adminHref("/admin/login"));
 }

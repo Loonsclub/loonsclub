@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Reveal from "./components/Reveal";
 import Hero from "./components/Hero";
 import ProgramCards from "./components/ProgramCards";
@@ -6,6 +5,7 @@ import SiteFooter from "./components/SiteFooter";
 import { PROGRAMS } from "./lib/programs";
 import WaysToJoin, { type Track } from "./components/WaysToJoin";
 import Quote from "./components/Quote";
+import TeamCards, { type TeamMember } from "./components/TeamCards";
 
 
 const NAV = [
@@ -63,26 +63,33 @@ const QUOTE_LEAD = "The reasonable man adapts himself to the world; the unreason
 const QUOTE_PUNCHLINE = "Therefore all progress depends on the unreasonable man.";
 
 
+// Only list formats for programs that are switched on in lib/programs.ts
+const live = (formats: Track["formats"]) => formats.filter((f) => PROGRAMS.some((p) => p.title === f.program));
+
+// Copy below is written for the one program we run now. The two-program wording is kept
+// in the comment next to each line, for when the Startup Bootcamp comes back.
 const TRACKS: Track[] = [
   {
     key: "schools",
     label: "For schools",
     headline: "We bring it to your campus.",
     intro:
-      "We partner with your school and run the programs on your premises. You give us a room and a slot in the timetable; we bring the founders, mentors and material.",
+      // two programs: "...and run the programs on your premises..."
+      "We partner with your school and run the program on your premises. You give us a room and a slot in the timetable; we bring the founders, mentors and material.",
     facts: [
       { label: "Where", value: "Your school premises" },
       { label: "When", value: "Fitted into your school calendar" },
       { label: "Who", value: "Students from various classes mixed into teams" },
       { label: "What you need", value: "A room, a slot, and a teacher point of contact" },
     ],
-    formats: [
+    formats: live([
       { program: "Startup Bootcamp", how: "One full day on campus" },
       { program: "Becoming Entrepreneurial", how: "Regular sessions across the academic year" },
-    ],
+    ]),
     steps: [
       "Talk to us about your school and your students.",
-      "Pick the bootcamp, the year-long program, or both.",
+      // two programs: "Pick the bootcamp, the year-long program, or both."
+      "Pick the classes and students who will take part.",
       "We plan the sessions around your calendar.",
       "Founders and mentors run every session at your school.",
       "Students pitch their ideas at a showcase on campus.",
@@ -94,33 +101,47 @@ const TRACKS: Track[] = [
     label: "For students",
     headline: "Build on your weekends.",
     intro:
-      "Not at a partner school? Join on your own. We run both programs on weekends, with students from schools across Chennai working side by side.",
+      // two programs: "...We run both programs on weekends..."
+      "Not at a partner school? Join on your own. We run the program on weekends, with students from schools across Chennai working side by side.",
     facts: [
-      { label: "Where", value: "Our space in IITM Research Park, Chennai" },
+      { label: "Where", value: "IITM Research Park, Chennai" },
       { label: "When", value: "Weekends" },
       { label: "Who", value: "Students from any school, mixed into teams" },
       { label: "What you need", value: "Curiosity, and your weekends" },
     ],
-    formats: [
+    formats: live([
       { program: "Startup Bootcamp", how: "One Saturday or Sunday" },
       { program: "Becoming Entrepreneurial", how: "Weekend sessions through the year" },
-    ],
+    ]),
     steps: [
       "Save a seat with a short form.",
-      "Pick the bootcamp or the year-long program.",
-      "Meet your team and your mentor on the first weekend.",
-      "Build your idea with founders, weekend by weekend.",
-      "Pitch to a panel of founders and investors.",
+      // two programs: "Pick the bootcamp or the year-long program."
+      "Meet us for an intro call and go through the admission process.",
+      "Understand the Startup Fundamentals from experienced founders.",
+      "Find your Co-founders, and build the MVP.",
+      "Pitch it with real users and iterate.",
     ],
     cta: { label: "Save a seat", popup: "enroll" },
   },
 ];
 
-const TEAM: { name: string; role: string; previously: string; photo: string | null }[] = [
-  { name: "Member name", role: "Founder & CEO", previously: "Previously founded an edtech startup", photo: null },
-  { name: "Member name", role: "Head of Programs", previously: "Previously a curriculum lead at a K–12 school", photo: null },
-  { name: "Member name", role: "Mentor Lead", previously: "Previously a product manager at a SaaS company", photo: null },
-  { name: "Member name", role: "Community & Partnerships", previously: "Previously ran a startup incubator", photo: null },
+// role: position at loonsclub. previously: past experience, a line or a short paragraph.
+// focus/zoom frame each face inside the circle: focus is the point zoomed into.
+const TEAM: TeamMember[] = [
+  {
+    name: "Arjuna Venkatesh",
+    role: "Founder & CEO",
+    previously:
+      "Arjun is a Serial Entrepreneur. He started his career as a Design Engineer at L&T. He founded Ippy, an edtech startup during his final semester of the MS program at IIT Madras. He was part of the Founding team of mSiren, a healthtech startup and recently exited. Currently, he is building a manufacturing startup.",
+    photo: "/Arjun.jpg",
+    focus: "45% 16%",
+    zoom: 2.2,
+  },
+  { name: "Dr. L. S. Ganesh", role: "Advisor & Mentor", previously: "LSG is a retired Professor of Management, IIT Madras. He established the Dept. of Management Studies at IIT Madras. During his tenure, he has taught multiple courses in entrepreneurship and management and has mentored dozens of startups. After his retirement, he served as the Vice Chancellor for ICFAI institute.", photo: "/Dr LS Ganesh.png", focus: "50% 0%" },
+  { name: "Dr. M. P. Ganesh", role: "Advisor & Program Design", previously: "MPG is an Associate Professor at IIT Hyderabad. He established the Entrepreneurship and Management department at IIT Hyderabad. Teaches including Techno Entrepreneurship.He has mentored multiple early stage startups and entrepreneurs.", photo: "/mpganesh photo.jpg" },
+  { name: "Dr. Ramesh", role: "Mentor & Program Design", previously: "Faculty at Desai Entrepreneurship school, IIT Bombay. Heading the Pre-incubation centre, evaluates and mentors early stage startups. Handles fintech and other entrepreneurship courses. Prior to that he was the CEO of Ynos, a venture search engine startup at IIT Madras RP. His research interests include startup funding.", photo: "/ramesh.png", focus: "50% 0%", zoom: 1.25 },
+  { name: "Rajkumar", role: "Program Manager", previously: "Rajkumar is an Automobile Engineer and a TFI fellow. He has been in education for close to a decade working closely with schools and students. ", photo: "/Rajkumar.jpeg", focus: "50% 3%", zoom: 1.1, headroom: 3 },
+  { name: "Veeresh", role: "Tech Lead", previously: "Veeresh is a Software Developer, responsible for driving the technical development and implementation.", photo: "/veeresh.png", focus: "10% 0%", headroom: 2 },
 ];
 
 export default function Home() {
@@ -186,13 +207,15 @@ export default function Home() {
         <section id="programs" className="scroll-mt-4 bg-sand px-5 py-24 sm:px-8 sm:py-32">
           <div className="mx-auto max-w-7xl">
             <Reveal className="mb-14 max-w-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">Programs</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">The program</p>
+              {/* two programs: heading "Two programs." and text "Start with a single day that lights the fuse,
+                  or spend a year actually building. Both are run by founders who have done it themselves." */}
               <h2 className="section-title mt-4">
-                Two programs.
+                One year. One <span className="text-gradient">real startup</span>.
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-muted">
-                Start with a single day that lights the fuse, or spend a year actually building. Both are run by
-                founders who have done it themselves.
+                Spend a year actually building: find a problem, build the product and take it to market, with a
+                team and a mentor. Run by founders who have done it themselves.
               </p>
             </Reveal>
             <ProgramCards programs={PROGRAMS} />
@@ -212,7 +235,8 @@ export default function Home() {
                 <span className="text-gradient">weekends</span>.
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-muted">
-                Both programs run in two ways. Schools bring us onto their campus; students can also join on their
+                {/* two programs: "Both programs run in two ways..." */}
+                The program runs in two ways. Schools bring us onto their campus; students can also join on their
                 own at weekends.
               </p>
               <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-ink/80 shadow-sm ring-1 ring-accent/15">
@@ -228,7 +252,7 @@ export default function Home() {
         </section>
 
         {/* 4. MEET THE TEAM */}
-        <section id="team" className="scroll-mt-4 bg-linear-to-b from-white to-sand px-5 py-24 text-ink sm:px-8 sm:py-32">
+        <section id="team" className="scroll-mt-4 bg-white px-5 py-24 text-ink sm:px-8 sm:py-32">
           <div className="mx-auto max-w-6xl">
             <Reveal className="mx-auto max-w-2xl text-center">
               <p className="inline-flex items-center gap-2 rounded-full bg-accent/8 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-accent ring-1 ring-accent/15">
@@ -237,44 +261,12 @@ export default function Home() {
               <h2 className="section-title mt-5">
                 Meet the <span className="text-gradient">team</span>
               </h2>
-              <div aria-hidden className="bg-accent-gradient mx-auto mt-6 h-1 w-16 rounded-full" />
               <p className="mt-6 text-lg leading-relaxed text-muted">
                 Founders, educators and operators who have built things themselves, and now help students do the
                 same.
               </p>
             </Reveal>
-            <ul className="mt-16 grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4 lg:gap-x-8">
-              {TEAM.map((m, i) => (
-                <Reveal as="li" key={i} delay={i * 90} className="group">
-                  <div className="relative aspect-square overflow-hidden rounded-2xl bg-sand ring-1 ring-ink/5">
-                    {m.photo ? (
-                      <Image
-                        src={m.photo}
-                        alt={m.name}
-                        fill
-                        sizes="(min-width: 1024px) 270px, 50vw"
-                        className="object-cover transition duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="absolute inset-0 m-auto h-1/3 w-1/3 text-ink/20"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                        aria-hidden
-                      >
-                        <circle cx="12" cy="8" r="4" />
-                        <path d="M4 21a8 8 0 0 1 16 0" />
-                      </svg>
-                    )}
-                  </div>
-                  <h3 className="mt-5 font-display text-lg font-medium tracking-tight">{m.name}</h3>
-                  <p className="mt-1 text-sm font-medium text-accent">{m.role}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{m.previously}</p>
-                </Reveal>
-              ))}
-            </ul>
+            <TeamCards team={TEAM} />
           </div>
         </section>
       </main>

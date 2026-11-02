@@ -119,6 +119,21 @@ export default function SessionList({ sessions, unit }: { sessions: Session[]; u
                   </li>
                 ))}
               </ul>
+
+              {s.review && (
+                <div className="relative mt-4 flex flex-col gap-3 rounded-2xl bg-sand p-5 ring-1 ring-accent/20 sm:flex-row sm:items-center sm:gap-5">
+                  <span className="bg-accent-gradient inline-flex w-fit shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-white">
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M5 21V4M5 4h11l-2 4 2 4H5" />
+                    </svg>
+                    Review
+                  </span>
+                  <div>
+                    <p className="font-display font-semibold tracking-tight">{s.review.title}</p>
+                    <p className="mt-1 text-sm leading-relaxed text-muted">{s.review.detail}</p>
+                  </div>
+                </div>
+              )}
             </article>
           </Reveal>
         ))}

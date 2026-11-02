@@ -13,9 +13,10 @@ export async function GET(request: Request) {
   const rows: (string | null)[][] =
     type === "students"
       ? [
-          ["Reference", "Student", "Parent", "Email", "Phone", "School", "Grade", "Program", "Registered at"],
+          ["Reference", "Student", "Parent", "Email", "Phone", "School", "Grade", "Program", "Registered at", "Status", "Converted at"],
           ...(await listEnrollments()).map((e) => [
             e.orderId, e.studentName, e.parentName, e.email, e.phone, e.school, e.grade, e.program, e.createdAt,
+            e.convertedAt ? "Converted" : "On hold", e.convertedAt,
           ]),
         ]
       : [

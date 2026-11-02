@@ -7,7 +7,6 @@ export const ENROLL_FIELDS = [
   "phone",
   "school",
   "grade",
-  "terms",
 ] as const;
 
 export type EnrollField = (typeof ENROLL_FIELDS)[number];
@@ -28,8 +27,6 @@ export function validateField(field: EnrollField, value: string): string | undef
       return v.length < 2 ? "Enter the student's school." : undefined;
     case "grade":
       return v ? undefined : "Choose a grade.";
-    case "terms":
-      return v === "on" ? undefined : "Please accept the terms to continue.";
   }
 }
 

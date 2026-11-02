@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EnrollPopup } from "../../components/FormPopups";
 import JoinTimeline from "../../components/program/JoinTimeline";
+import OutcomeIcon from "../../components/program/OutcomeIcon";
 import ProgramHero from "../../components/program/ProgramHero";
 import SessionList from "../../components/program/SessionList";
 import Reveal from "../../components/Reveal";
@@ -36,7 +37,7 @@ export default async function ProgramPage({ params }: PageProps<"/programs/[slug
         items={[
           { href: "#join", label: "How to join" },
           { href: "#about", label: "About" },
-          { href: "/#programs", label: "All programs" },
+          { href: "/#programs", label: PROGRAMS.length > 1 ? "All programs" : "Home" },
         ]}
       />
 
@@ -63,25 +64,39 @@ export default async function ProgramPage({ params }: PageProps<"/programs/[slug
         <section id="about" className="scroll-mt-4 bg-sand px-5 pb-24 sm:px-8 sm:pb-32">
           <div className="mx-auto max-w-7xl">
             <div className="bg-night relative overflow-hidden rounded-[2.5rem] p-8 text-white sm:p-12 lg:p-16">
-              <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-end">
+              <div className="grid gap-6 lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-16">
                 <Reveal>
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent-light">About the program</p>
                   <h2 className="section-title mt-4">
                     {program.title}, <span className="text-gradient-light">{unit} by {unit}</span>.
                   </h2>
-                  <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/70">{program.body}</p>
                 </Reveal>
                 <Reveal delay={120}>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50">You leave with</p>
-                  <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                    {program.outcomes.map((o, i) => (
-                      <li key={o} className="rounded-2xl bg-white/6 p-5 ring-1 ring-white/12 backdrop-blur">
-                        <span className="font-display text-sm font-bold text-accent-light">{String(i + 1).padStart(2, "0")}</span>
-                        <p className="mt-2 leading-snug text-white/90">{o}</p>
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="max-w-lg text-lg leading-relaxed text-white/70">{program.body}</p>
                 </Reveal>
+              </div>
+
+              {/* OUTCOMES */}
+              <div className="mt-14 border-t border-white/10 pt-10 lg:mt-16 lg:pt-12">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50">You leave with</p>
+                <ul
+                  className={`mt-6 grid gap-4 sm:grid-cols-2 ${program.outcomes.length % 3 === 0 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}
+                >
+                  {program.outcomes.map((o, i) => (
+                    <Reveal as="li" key={o.title} delay={i * 70}>
+                      <div className="group relative h-full rounded-3xl bg-white/4 p-6 ring-1 ring-white/10 transition duration-300 hover:-translate-y-1 hover:bg-white/7 hover:ring-accent-light/30 sm:p-7">
+                        <span aria-hidden className="absolute right-6 top-6 font-display text-sm font-bold text-white/20">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="bg-accent-gradient grid h-12 w-12 place-items-center rounded-2xl text-white shadow-[0_12px_28px_-10px_rgba(168,85,247,0.85)] ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-105">
+                          <OutcomeIcon name={o.icon} className="h-6 w-6" />
+                        </span>
+                        <h3 className="mt-6 font-display text-lg font-semibold leading-snug tracking-tight text-white">{o.title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-white/60">{o.detail}</p>
+                      </div>
+                    </Reveal>
+                  ))}
+                </ul>
               </div>
             </div>
 

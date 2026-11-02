@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform, type Variants } from "motion/react";
 import { useRef } from "react";
-import type { Program } from "../../lib/programs";
+import { PROGRAMS, type Program } from "../../lib/programs";
 import { EnrollPopup } from "../FormPopups";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -40,7 +40,7 @@ export default function ProgramHero({ program }: { program: Program }) {
               <span aria-hidden className="transition-transform group-hover:-translate-x-1">
                 ←
               </span>
-              All programs
+              {PROGRAMS.length > 1 ? "All programs" : "Back to home"}
             </Link>
           </motion.div>
 

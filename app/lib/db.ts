@@ -33,6 +33,8 @@ export type Enrollment = {
   grade: string;
   program: string | null;
   createdAt: string;
+  // null while the enrollment is on hold
+  convertedAt: string | null;
 };
 
 export type PartnerEnquiry = {
@@ -49,7 +51,7 @@ export function hasDatabase() {
   return !!databaseUrl();
 }
 
-export async function saveEnrollment(e: Omit<Enrollment, "id" | "createdAt">) {
+export async function saveEnrollment(e: Omit<Enrollment, "id" | "createdAt" | "convertedAt">) {
   await client()`
     insert into enrollments (order_id, student_name, parent_name, email, phone, school, grade, program)
     values (${e.orderId}, ${e.studentName}, ${e.parentName}, ${e.email}, ${e.phone}, ${e.school}, ${e.grade}, ${e.program})
@@ -65,8 +67,8 @@ export async function savePartnerEnquiry(p: Omit<PartnerEnquiry, "id" | "created
 
 export async function listEnrollments(): Promise<Enrollment[]> {
   const rows = await client()`
-    select id, order_id, student_name, parent_name, email, phone, school, grade, program, created_at
-    from enrollments order by created_at desc
+    select id, order_id, student_name, parent_name, email, phone, school, grade, program, created_at, converted_at
+    from enrollments order by created_at desc, id desc
   `;
   return rows.map((r) => ({
     id: Number(r.id),
@@ -79,7 +81,18 @@ export async function listEnrollments(): Promise<Enrollment[]> {
     grade: r.grade,
     program: r.program,
     createdAt: new Date(r.created_at).toISOString(),
+    convertedAt: r.converted_at ? new Date(r.converted_at).toISOString() : null,
   }));
+}
+
+export async function setEnrollmentConverted(id: number, converted: boolean) {
+  await client()`
+    update enrollments set converted_at = case when ${converted}::boolean then now() end where id = ${id}
+  `;
+}
+
+export async function deleteEnrollment(id: number) {
+  await client()`delete from enrollments where id = ${id}`;
 }
 
 export async function listPartnerEnquiries(): Promise<PartnerEnquiry[]> {

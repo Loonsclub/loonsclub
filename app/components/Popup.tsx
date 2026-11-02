@@ -111,7 +111,7 @@ export default function Popup({ open, onClose, eyebrow, title, intro, points, ba
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="relative grid max-h-[92svh] w-full max-w-5xl overflow-hidden rounded-t-4xl bg-white shadow-[0_60px_120px_-30px_rgba(26,16,51,0.7)] ring-1 ring-white/10 sm:max-h-[min(54rem,calc(100svh-3rem))] sm:rounded-4xl lg:grid-cols-[0.85fr_1.15fr]"
+            className="relative flex max-h-[92svh] w-full flex-col max-w-5xl overflow-hidden rounded-t-4xl bg-white shadow-[0_60px_120px_-30px_rgba(26,16,51,0.7)] ring-1 ring-white/10 sm:max-h-[min(54rem,calc(100svh-3rem))] sm:rounded-4xl lg:grid lg:grid-cols-[0.85fr_1.15fr]"
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 80, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduceMotion ? undefined : { y: 60, scale: 0.97 }}
@@ -165,7 +165,7 @@ export default function Popup({ open, onClose, eyebrow, title, intro, points, ba
             </motion.aside>
 
             {/* right: the form */}
-            <div className="relative overflow-y-auto overscroll-contain px-6 pb-8 pt-4 sm:px-10 sm:pb-10 sm:pt-10">
+            <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-[max(2rem,env(safe-area-inset-bottom))] pt-4 sm:px-10 sm:pb-10 sm:pt-10">
               <span aria-hidden className="mx-auto mb-6 block h-1.5 w-12 rounded-full bg-ink/15 sm:hidden" />
               <div className="pr-12 lg:pr-0">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent lg:hidden">{eyebrow}</p>

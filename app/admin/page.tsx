@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { countRecentEnrollments, hasDatabase, listEnrollments, listPartnerEnquiries } from "../lib/db";
 import { logout } from "./auth";
 import Dashboard from "./Dashboard";
+import { adminHref } from "./paths";
 import { requireAdmin } from "./require-admin";
 
 export default function AdminPage() {
@@ -42,12 +43,13 @@ async function DashboardData() {
       </div>
     );
   }
-  const [enrollments, partners, newThisWeek] = await Promise.all([
+  const [enrollments, partners, newThisWeek, exportHref] = await Promise.all([
     listEnrollments(),
     listPartnerEnquiries(),
     countRecentEnrollments(7),
+    adminHref("/admin/export"),
   ]);
-  return <Dashboard enrollments={enrollments} partners={partners} newThisWeek={newThisWeek} />;
+  return <Dashboard enrollments={enrollments} partners={partners} newThisWeek={newThisWeek} exportHref={exportHref} />;
 }
 
 function DashboardSkeleton() {

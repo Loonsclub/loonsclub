@@ -116,38 +116,41 @@ export default function PartnerForm() {
         </Field>
       </div>
 
-      <fieldset className="mt-2">
-        <legend className="flex w-full items-baseline justify-between gap-3 text-sm font-medium text-ink">
-          Interested in
-          <span className="text-xs font-normal text-muted">Optional</span>
-        </legend>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {PARTNER_INTERESTS.map((interest) => {
-            const on = interests.includes(interest);
-            return (
-              <label
-                key={interest}
-                className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium ring-1 transition has-focus-visible:ring-4 has-focus-visible:ring-accent/25 ${
-                  on ? "bg-accent-gradient text-white ring-transparent shadow-[0_8px_20px_-10px_rgba(124,58,237,0.8)]" : "bg-white text-ink/70 ring-ink/15 hover:text-ink hover:ring-ink/40"
-                }`}
-              >
-                <input type="checkbox" name="interest" value={interest} checked={on} onChange={() => toggle(interest)} className="sr-only" />
-                <span
-                  aria-hidden
-                  className={`flex h-4 w-4 items-center justify-center rounded-full transition ${on ? "bg-white text-accent" : "ring-1 ring-ink/25"}`}
+      {/* only worth asking when there's a choice: the active programs plus "Not sure yet" */}
+      {PARTNER_INTERESTS.length > 2 && (
+        <fieldset className="mt-2">
+          <legend className="flex w-full items-baseline justify-between gap-3 text-sm font-medium text-ink">
+            Interested in
+            <span className="text-xs font-normal text-muted">Optional</span>
+          </legend>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {PARTNER_INTERESTS.map((interest) => {
+              const on = interests.includes(interest);
+              return (
+                <label
+                  key={interest}
+                  className={`inline-flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-sm font-medium ring-1 transition has-focus-visible:ring-4 has-focus-visible:ring-accent/25 ${
+                    on ? "bg-accent-gradient text-white ring-transparent shadow-[0_8px_20px_-10px_rgba(124,58,237,0.8)]" : "bg-white text-ink/70 ring-ink/15 hover:text-ink hover:ring-ink/40"
+                  }`}
                 >
-                  {on && (
-                    <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="3.5">
-                      <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                </span>
-                {interest}
-              </label>
-            );
-          })}
-        </div>
-      </fieldset>
+                  <input type="checkbox" name="interest" value={interest} checked={on} onChange={() => toggle(interest)} className="sr-only" />
+                  <span
+                    aria-hidden
+                    className={`flex h-4 w-4 items-center justify-center rounded-full transition ${on ? "bg-white text-accent" : "ring-1 ring-ink/25"}`}
+                  >
+                    {on && (
+                      <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="3.5">
+                        <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </span>
+                  {interest}
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      )}
 
       {state.status === "error" && state.formError && (
         <p role="alert" className="mt-6 rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
