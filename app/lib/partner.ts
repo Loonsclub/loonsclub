@@ -1,14 +1,8 @@
-// School partnership enquiry. Shared by the client (inline validation) and the server action.
-
 import { PROGRAMS } from "./programs";
 
 export const PARTNER_FIELDS = ["schoolName", "principalName", "email", "phone"] as const;
-
 export type PartnerField = (typeof PARTNER_FIELDS)[number];
 export type PartnerErrors = Partial<Record<PartnerField, string>>;
-
-// Optional: which programs the school is curious about. Follows the active programs;
-// the form only asks when there is more than one to choose from.
 export const PARTNER_INTERESTS: readonly string[] = [...PROGRAMS.map((p) => p.title), "Not sure yet"];
 
 export function validatePartnerField(field: PartnerField, value: string): string | undefined {

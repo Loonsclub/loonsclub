@@ -1,6 +1,5 @@
 export type JoinStep = { title: string; detail: string; meta: string };
 
-// icons drawn by components/program/OutcomeIcon
 export type OutcomeIconName =
   | "compass"
   | "growth"
@@ -13,50 +12,40 @@ export type OutcomeIconName =
   | "network"
   | "rocket";
 
-// One block of the program: a session in the bootcamp, a phase in the year-long program
 export type Session = {
   label: string;
   format: string;
   title: string;
   summary: string;
   topics: { title: string; detail: string }[];
-  // checkpoint held after the block ends, e.g. the quarterly review closing a phase
   review?: { title: string; detail: string };
 };
 
-// `number`, `eyebrow` and `href` are filled in below from the program's place in the list
 type ProgramData = Omit<Program, "number" | "eyebrow" | "href">;
 
 export type Program = {
-  // false hides the program from the whole site (cards, its page, forms) but keeps it here
   active: boolean;
-  // e.g. "Program 01 · 1 year"
   eyebrow: string;
   title: string;
   body: string;
-  // set to a path in /public; null shows a placeholder
   image: string | null;
   imageAlt: string;
-  // the program's own page
   href: string;
   slug: string;
   number: string;
   duration: string;
   tagline: string;
-  // focal point for the tall hero crop, as a CSS object-position
   imagePosition: string;
   facts: { label: string; value: string }[];
-  // what the blocks in `sessions` are called
   sessionUnit: "Sessions" | "Phases";
   join: JoinStep[];
   outcomes: { icon: OutcomeIconName; title: string; detail: string }[];
   sessions: Session[];
 };
 
-// Every program we have ever written up. Only the `active` ones show on the site.
 const ALL_PROGRAMS: ProgramData[] = [
   {
-    // Paused for now. Set `active: true` to bring it back everywhere.
+    //Change active to 'true'
     active: false,
     slug: "startup-bootcamp",
     duration: "1 day",
@@ -192,7 +181,7 @@ const ALL_PROGRAMS: ProgramData[] = [
           { title: "What is Marketing", detail: "How to reach and win your first customers." },
           { title: "GTM Plan", detail: "Your plan for launching to market." },
         ],
-        review: { title: "Q3 Demo day", detail: "Pitch your startup to founders and mentors." },
+        review: { title: "Q3 Demo day", detail: "Showcase your startup to Mentors, Investors, and Public." },
       },
     ],
   },
@@ -200,13 +189,11 @@ const ALL_PROGRAMS: ProgramData[] = [
 
 const active = ALL_PROGRAMS.filter((p) => p.active);
 
-// What the site shows. Numbers follow the order of the active programs.
 export const PROGRAMS: Program[] = active.map((p, i) => {
   const number = String(i + 1).padStart(2, "0");
   return {
     ...p,
     number,
-    // a lone program needs no number
     eyebrow: active.length > 1 ? `Program ${number} · ${p.duration}` : `${p.duration.replace(" ", "-")} program`,
     href: `/programs/${p.slug}`,
   };

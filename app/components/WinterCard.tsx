@@ -195,7 +195,7 @@ export default function WinterCard({
           <span className="relative mt-3 block text-center font-display">
             <span className="block text-[0.6rem] uppercase tracking-[0.14em] text-white/55">Kicks off</span>
             <span className="block text-xl font-semibold leading-tight">December &rsquo;26</span>
-            <span className="mt-1 block text-[0.68rem] text-white/70">Limited seats are available</span>
+            <span className="mt-1 block text-[0.68rem] text-white/70">Limited seats available</span>
           </span>
 
           <span className="relative mt-3 flex items-center justify-between border-t border-white/10 pt-2.5 text-xs font-medium">

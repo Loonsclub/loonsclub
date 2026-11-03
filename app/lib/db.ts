@@ -1,20 +1,17 @@
 import "server-only";
 import postgres from "postgres";
 
-// Any Postgres works: Supabase or Neon. Use the provider's *pooled* connection string
-// (Supabase: transaction pooler, port 6543; Neon: the "-pooler" host). Tables live in db/schema.sql.
 function databaseUrl() {
   return process.env.DATABASE_URL ?? process.env.POSTGRES_URL;
 }
 
-// One client per server instance; kept on globalThis so dev hot reloads don't open new pools
 const globalForDb = globalThis as unknown as { sql?: postgres.Sql };
 
 function client() {
   const url = databaseUrl();
   if (!url) throw new Error("DATABASE_URL is not set");
   globalForDb.sql ??= postgres(url, {
-    // Poolers in transaction mode (Supabase 6543, Neon -pooler) don't support prepared statements
+
     prepare: false,
     ssl: /@(localhost|127\.0\.0\.1)[:/]/.test(url) ? false : "require",
     max: 5,
@@ -33,7 +30,6 @@ export type Enrollment = {
   grade: string;
   program: string | null;
   createdAt: string;
-  // null while the enrollment is on hold
   convertedAt: string | null;
 };
 

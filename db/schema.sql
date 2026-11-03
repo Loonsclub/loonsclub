@@ -1,4 +1,4 @@
--- Run once against your database (Supabase or Neon): npm run db:setup
+-- Run once against your database: npm run db:setup
 -- Safe to re-run.
 
 create table if not exists enrollments (

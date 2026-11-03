@@ -1,6 +1,3 @@
-// Signed admin session cookie. Uses Web Crypto only, so it runs in proxy.ts as well as on the server.
-// Token: "<expiresAtMs>.<base64url HMAC-SHA256 of expiresAtMs>", keyed by ADMIN_SESSION_SECRET.
-
 export const ADMIN_COOKIE = "lc_admin";
 export const SESSION_TTL_SECONDS = 60 * 60 * 12;
 
@@ -16,7 +13,6 @@ async function hmac(value: string): Promise<string> {
   return btoa(String.fromCharCode(...sig)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-// Compares every character so the time taken doesn't reveal how much of the input matched
 export function safeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
   let diff = 0;

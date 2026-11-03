@@ -1,5 +1,3 @@
-// Shared by the client (inline validation) and the server action.
-
 export const ENROLL_FIELDS = [
   "studentName",
   "parentName",
