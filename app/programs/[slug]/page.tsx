@@ -9,7 +9,8 @@ import SessionList from "../../components/program/SessionList";
 import Reveal from "../../components/Reveal";
 import SiteFooter from "../../components/SiteFooter";
 import SiteNav from "../../components/SiteNav";
-import { getProgram, PROGRAMS } from "../../lib/programs";
+import { getProgram, PROGRAMS, type Program } from "../../lib/programs";
+import { absoluteUrl, jsonLd, ORGANIZATION_ID, organizationSchema, SITE } from "../../lib/site";
 
 // Every section below depends on the slug, so there's no shared shell worth prefetching
 export const instant = false;
@@ -21,7 +22,63 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/programs/[slug]">): Promise<Metadata> {
   const program = getProgram((await params).slug);
   if (!program) return {};
-  return { title: `${program.title} — Loons Club`, description: program.body };
+  const title = `${program.title}: Startup Program for School Students`;
+  const description = `${program.body} For students in Class 6 to 12, at your school or on weekends at ${SITE.venue}, ${SITE.city}.`;
+  return {
+    title,
+    description,
+    keywords: [program.title, `${program.title} program`, ...SITE.keywords],
+    alternates: { canonical: program.href },
+    openGraph: { type: "website", url: program.href, title, description, siteName: SITE.name, locale: SITE.locale },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
+
+// Course + breadcrumb structured data, so the program can show up as a course in search
+function programSchema(program: Program) {
+  const url = absoluteUrl(program.href);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      { ...organizationSchema },
+      {
+        "@type": "Course",
+        "@id": `${url}#course`,
+        name: program.title,
+        description: program.body,
+        url,
+        inLanguage: "en",
+        provider: { "@id": ORGANIZATION_ID },
+        educationalLevel: "Class 6 to 12",
+        audience: { "@type": "EducationalAudience", educationalRole: "student" },
+        teaches: program.outcomes.map((o) => o.title),
+        syllabusSections: program.sessions.map((s) => ({
+          "@type": "Syllabus",
+          name: `${s.label}: ${s.title}`,
+          description: s.summary,
+        })),
+        hasCourseInstance: [
+          {
+            "@type": "CourseInstance",
+            courseMode: "Onsite",
+            location: {
+              "@type": "Place",
+              name: SITE.venue,
+              address: { "@type": "PostalAddress", addressLocality: SITE.city, addressRegion: SITE.region, addressCountry: SITE.country },
+            },
+          },
+        ],
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+          { "@type": "ListItem", position: 2, name: "Programs", item: absoluteUrl("/#programs") },
+          { "@type": "ListItem", position: 3, name: program.title, item: url },
+        ],
+      },
+    ],
+  };
 }
 
 export default async function ProgramPage({ params }: PageProps<"/programs/[slug]">) {
@@ -32,6 +89,7 @@ export default async function ProgramPage({ params }: PageProps<"/programs/[slug
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(programSchema(program))} />
       <SiteNav
         program={program.title}
         items={[

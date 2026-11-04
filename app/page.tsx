@@ -6,6 +6,14 @@ import { PROGRAMS } from "./lib/programs";
 import WaysToJoin, { type Track } from "./components/WaysToJoin";
 import Quote from "./components/Quote";
 import TeamCards, { type TeamMember } from "./components/TeamCards";
+import type { Metadata } from "next";
+import { absoluteUrl, jsonLd, ORGANIZATION_ID, organizationSchema, SITE, SITE_URL } from "./lib/site";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  // openGraph replaces the layout's object rather than merging into it, so it is restated in full
+  openGraph: { type: "website", url: "/", siteName: SITE.name, locale: SITE.locale, title: SITE.title, description: SITE.description },
+};
 
 
 const NAV = [
@@ -144,9 +152,70 @@ const TEAM: TeamMember[] = [
   { name: "Veeresh", role: "Tech Lead", previously: "Veeresh is a Software Developer, responsible for driving the technical development and implementation.", photo: "/veeresh.png", focus: "10% 0%", headroom: 2 },
 ];
 
+// Organization, site, page, programs and team as one linked graph for search engines
+const HOME_SCHEMA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      ...organizationSchema,
+      founder: { "@id": `${SITE_URL}/#person-${slugify(TEAM[0].name)}` },
+      employee: TEAM.map((m) => ({ "@id": `${SITE_URL}/#person-${slugify(m.name)}` })),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: SITE.name,
+      description: SITE.description,
+      inLanguage: "en-IN",
+      publisher: { "@id": ORGANIZATION_ID },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/#webpage`,
+      url: SITE_URL,
+      name: SITE.title,
+      description: SITE.description,
+      inLanguage: "en-IN",
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      about: { "@id": ORGANIZATION_ID },
+      primaryImageOfPage: absoluteUrl("/hero.png"),
+    },
+    {
+      "@type": "ItemList",
+      name: `${SITE.name} programs`,
+      itemListElement: PROGRAMS.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "Course",
+          name: p.title,
+          description: p.body,
+          url: absoluteUrl(p.href),
+          provider: { "@id": ORGANIZATION_ID },
+        },
+      })),
+    },
+    ...TEAM.map((m) => ({
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person-${slugify(m.name)}`,
+      name: m.name,
+      jobTitle: m.role,
+      description: m.previously.trim(),
+      image: m.photo ? absoluteUrl(encodeURI(m.photo)) : undefined,
+      worksFor: { "@id": ORGANIZATION_ID },
+    })),
+  ],
+};
+
+function slugify(s: string) {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(HOME_SCHEMA)} />
       {/* 1. HERO */}
       <Hero nav={NAV} />
 

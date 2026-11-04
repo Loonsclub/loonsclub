@@ -32,7 +32,7 @@ export default function Hero({ nav }: { nav: NavItem[] }) {
         >
           <Image
             src="/hero.png"
-            alt="Loonsclub students"
+            alt="Pencil sketch of famous inventors, scientists, artists and founders who changed the world: the original loons"
             width={1536}
             height={1024}
             priority
