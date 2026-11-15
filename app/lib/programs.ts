@@ -1,6 +1,5 @@
 export type JoinStep = { title: string; detail: string; meta: string };
 
-// icons drawn by components/program/OutcomeIcon
 export type OutcomeIconName =
   | "compass"
   | "growth"
@@ -13,40 +12,31 @@ export type OutcomeIconName =
   | "network"
   | "rocket";
 
-// One block of the program: a session in the bootcamp, a phase in the year-long program
 export type Session = {
   label: string;
   format: string;
   title: string;
   summary: string;
   topics: { title: string; detail: string }[];
-  // checkpoint held after the block ends, e.g. the quarterly review closing a phase
   review?: { title: string; detail: string };
 };
 
-// `number`, `eyebrow` and `href` are filled in below from the program's place in the list
 type ProgramData = Omit<Program, "number" | "eyebrow" | "href">;
 
 export type Program = {
-  // false hides the program from the whole site (cards, its page, forms) but keeps it here
   active: boolean;
-  // e.g. "Program 01 · 1 year"
   eyebrow: string;
   title: string;
   body: string;
-  // set to a path in /public; null shows a placeholder
   image: string | null;
   imageAlt: string;
-  // the program's own page
   href: string;
   slug: string;
   number: string;
   duration: string;
   tagline: string;
-  // focal point for the tall hero crop, as a CSS object-position
   imagePosition: string;
   facts: { label: string; value: string }[];
-  // what the blocks in `sessions` are called
   sessionUnit: "Sessions" | "Phases";
   join: JoinStep[];
   outcomes: { icon: OutcomeIconName; title: string; detail: string }[];
@@ -56,7 +46,7 @@ export type Program = {
 // Every program we have ever written up. Only the `active` ones show on the site.
 const ALL_PROGRAMS: ProgramData[] = [
   {
-    // Paused for now. Set `active: true` to bring it back everywhere.
+    // Paused for now. Set `active: true` to bring it back.
     active: false,
     slug: "startup-bootcamp",
     duration: "1 day",
@@ -137,14 +127,14 @@ const ALL_PROGRAMS: ProgramData[] = [
     facts: [
       { label: "Duration", value: "10-Months" },
       { label: "Where", value: "Your school or IITM Research Park" },
-      { label: "Led by", value: "Founders and mentors" },
+      { label: "Led by", value: "Founders, Industry Experts, Investors, and Academicians" },
       { label: "You leave with", value: "Real-world Startup Experience" },
     ],
     join: [
       { title: "Save a seat", detail: "Fill in a short form.", meta: "2 minutes" },
       { title: "Intro call", detail: "We explain how the year works, and the admission process.", meta: "Within a week" },
       { title: "Apply", detail: "Go through the admission process.", meta: "Application" },
-      { title: "Meet your team", detail: "Your co-founders and mentor.", meta: "Day one" },
+      { title: "Join the Cohort", detail: "Meet your co-founders and mentor.", meta: "Day one" },
     ],
     outcomes: [
       { icon: "mentor", title: "Personalised mentorship", detail: "A mentor who guides your team all year." },

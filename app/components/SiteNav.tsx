@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import { useEffect, useState } from "react";
-import EnrollForm from "./EnrollForm";
-import Popup from "./Popup";
+import { EnrollFormPopup, OPEN_COHORT } from "./FormPopups";
 
 export type NavItem = { href: string; label: string };
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-export default function SiteNav({ items, program }: { items: NavItem[]; program?: string }) {
+// `program` tags the Apply form; it defaults to the cohort that is open now
+export default function SiteNav({ items, program = OPEN_COHORT }: { items: NavItem[]; program?: string }) {
   const reduceMotion = useReducedMotion();
   const { scrollY, scrollYProgress } = useScroll();
   const [scrolled, setScrolled] = useState(false);
@@ -201,27 +201,8 @@ export default function SiteNav({ items, program }: { items: NavItem[]; program?
         </AnimatePresence>
       </motion.header>
 
-      {/* the student enrollment form, opened by Apply */}
-      <Popup
-        open={applyOpen}
-        onClose={() => setApplyOpen(false)}
-        eyebrow="Enroll"
-        title={
-          <>
-            Save a <span className="text-gradient-light">seat</span>.
-          </>
-        }
-        intro="Spots are limited so every team gets real time with a mentor."
-        points={[
-          "Fill in this form.",
-          "We will call you back within 24 hours.",
-          "Confirm your availability and we fix a date",
-          "Show up curious. No experience needed.",
-        ]}
-        badge={program}
-      >
-        <EnrollForm program={program} bare />
-      </Popup>
+      {/* the student enrollment form, opened by Apply: the same one the winter card opens */}
+      <EnrollFormPopup open={applyOpen} onClose={() => setApplyOpen(false)} program={program} />
     </>
   );
 }
