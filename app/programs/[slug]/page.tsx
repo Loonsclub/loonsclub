@@ -168,6 +168,12 @@ export default async function ProgramPage({ params }: PageProps<"/programs/[slug
               <h2 className="section-title mx-auto mt-4 max-w-3xl">
                 Ready to start <span className="text-gradient">something</span>?
               </h2>
+              {program.fee && (
+                <p className="mt-6 text-muted">
+                  Program fee: <span className="font-medium text-ink">{program.fee.amount}</span>
+                  {program.fee.note && <> ({program.fee.note})</>}
+                </p>
+              )}
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <EnrollPopup
                   program={program.title}

@@ -8,8 +8,8 @@ export type OutcomeIconName =
   | "mentor"
   | "layers"
   | "mindset"
-  | "product"
-  | "network"
+  | "community"
+  | "visit"
   | "rocket";
 
 export type Session = {
@@ -41,9 +41,10 @@ export type Program = {
   join: JoinStep[];
   outcomes: { icon: OutcomeIconName; title: string; detail: string }[];
   sessions: Session[];
+  // Shown only at the bottom of the program's own page
+  fee?: { amount: string; note?: string };
 };
 
-// Every program we have ever written up. Only the `active` ones show on the site.
 const ALL_PROGRAMS: ProgramData[] = [
   {
     // Paused for now. Set `active: true` to bring it back.
@@ -117,18 +118,19 @@ const ALL_PROGRAMS: ProgramData[] = [
     active: true,
     slug: "becoming-entrepreneurial",
     duration: "1 year",
+    fee: { amount: "₹60,000", note: "for the full 10-month program" },
     title: "Becoming Entrepreneurial",
     tagline: "A year of actually building.",
     body: "A year taking a real startup from idea to Product Market Fit, with a team and a mentor.",
-    image: "https://images.unsplash.com/photo-1714976326743-9d2256f53bad?w=1600&q=80&auto=format&fit=crop",
+    image: "/program.jpg",
     imageAlt: "A group of people sitting around a table, looking at a laptop together",
     imagePosition: "50% 40%",
     sessionUnit: "Phases",
     facts: [
       { label: "Duration", value: "10-Months" },
-      { label: "Where", value: "Your school or IITM Research Park" },
-      { label: "Led by", value: "Founders, Industry Experts, Investors, and Academicians" },
-      { label: "You leave with", value: "Real-world Startup Experience" },
+      { label: "Where", value: "IITM Research Park" },
+      { label: "Led by", value: "Founders, Investors, and Professors" },
+      { label: "You leave with", value: "Startup Building Experience" },
     ],
     join: [
       { title: "Save a seat", detail: "Fill in a short form.", meta: "2 minutes" },
@@ -140,8 +142,8 @@ const ALL_PROGRAMS: ProgramData[] = [
       { icon: "mentor", title: "Personalised mentorship", detail: "A mentor who guides your team all year." },
       { icon: "layers", title: "Startup fundamentals", detail: "Value proposition and the Business Model Canvas." },
       { icon: "mindset", title: "Entrepreneurial mindset", detail: "Own problems, take risks, learn from failure." },
-      { icon: "product", title: "Product development", detail: "Take an idea all the way to a working product." },
-      { icon: "network", title: "Startup exposure", detail: "Time with founders and the startup ecosystem." },
+      { icon: "community", title: "Network & Community", detail: "Connect with peers, mentors and founders who back you." },
+      { icon: "visit", title: "Startup visits", detail: "Go inside real startups and see how they run." },
       { icon: "rocket", title: "Startup building experience", detail: "A full year building a real startup as a team." },
     ],
     sessions: [
@@ -149,7 +151,7 @@ const ALL_PROGRAMS: ProgramData[] = [
         label: "Phase 1",
         format: "Idea & team",
         title: "Find an idea worth pursuing",
-        summary: "Learn the fundamentals, form a team and pick a problem worth the year.",
+        summary: "Learn the fundamentals, hear a founder talk, form a team and pick a problem worth the year.",
         topics: [
           { title: "Orientation", detail: "How the year works, and what it asks of you." },
           { title: "Startup Fundamentals", detail: "Value proposition and the Business Model Canvas." },
@@ -162,7 +164,7 @@ const ALL_PROGRAMS: ProgramData[] = [
         label: "Phase 2",
         format: "MVP & fit",
         title: "Build the MVP",
-        summary: "Build the smallest product that tests your idea, and find out if people want it.",
+        summary: "Build the smallest product that tests your idea, learn from a founder talk and a startup visit, and find out if people want it.",
         topics: [
           { title: "Thinking Styles", detail: "Explore Creative, Design, and Systems Thinking" },
           { title: "Building a Minimum Viable Product", detail: "The smallest version that tests your idea." },
@@ -175,7 +177,7 @@ const ALL_PROGRAMS: ProgramData[] = [
         label: "Phase 3",
         format: "Build & Launch",
         title: "Go-to-Market",
-        summary: "Sharpen the product, plan the money and take it to market.",
+        summary: "Sharpen the product, plan the money and take it to market, with a founder talk on launching.",
         topics: [
           { title: "MVP iteration", detail: "Improve the product from real user feedback." },
           { title: "Startup Finance", detail: "Costs, pricing and how the numbers add up." },
