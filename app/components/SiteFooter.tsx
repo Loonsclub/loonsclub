@@ -1,7 +1,7 @@
 // Shared site footer: contact details and social links
 export default function SiteFooter() {
   return (
-    <footer className="bg-night relative px-5 pb-10 pt-20 text-cream sm:px-8">
+    <footer className="bg-night relative px-5 pb-10 pt-20 text-cream sm:px-8 sm:pt-24">
       <div aria-hidden className="bg-accent-gradient absolute inset-x-0 top-0 h-px" />
       <div className="mx-auto max-w-6xl">
         {/* <Reveal>
@@ -9,13 +9,15 @@ export default function SiteFooter() {
             Build it in <span className="text-gradient-light">Chennai.</span>
           </p>
         </Reveal> */}
-        <div className="mt-16 grid gap-12 border-t border-cream/15 pt-12 sm:grid-cols-3">
+        {/* With the heading above commented out, this row starts the footer, so it has no top margin or divider.
+            If the heading comes back, restore: mt-16 border-t border-cream/15 pt-12 */}
+        <div className="grid gap-12 sm:grid-cols-3">
           <div>
             <p className="flex items-center gap-2.5 font-logo text-xl font-bold tracking-tight lowercase">
               loonsclub
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-cream/60">
-              Helping students start something before they graduate.
+            Building Entrepreneurial mindset in school students.
             </p>
           </div>
           <div className="text-sm">

@@ -1,5 +1,6 @@
 import Reveal from "./components/Reveal";
 import Hero from "./components/Hero";
+import AboutSection from "./components/AboutSection";
 import ProgramCards from "./components/ProgramCards";
 import SiteFooter from "./components/SiteFooter";
 import { PROGRAMS } from "./lib/programs";
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 
 
 const NAV = [
-  { href: "#offer", label: "About" },
+  { href: "#about", label: "About" },
   { href: "#programs", label: "Programs" },
   { href: "#schools", label: "Schools" },
   { href: "#students", label: "Students" },
@@ -220,8 +221,11 @@ export default function Home() {
       <Hero nav={NAV} />
 
       <main>
+        {/* ABOUT LOONSCLUB */}
+        <AboutSection />
+
         {/* 2. WHAT WE OFFER */}
-        <section id="offer" className="scroll-mt-4 bg-linear-to-b from-white to-sand px-5 py-24 sm:px-8 sm:py-32">
+        <section id="offer" className="scroll-mt-4 bg-linear-to-b from-white to-sand px-5 py-20 sm:px-8 sm:py-24">
           <div className="mx-auto max-w-6xl">
             <Reveal>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">What we offer</p>
@@ -267,13 +271,13 @@ export default function Home() {
         <section
           id="quote"
           aria-label="Quote"
-          className="bg-night px-5 py-28 text-white sm:px-8 sm:py-40"
+          className="bg-night px-5 py-20 text-white sm:px-8 sm:py-24"
         >
           <Quote lead={QUOTE_LEAD} punchline={QUOTE_PUNCHLINE} author="George Bernard Shaw" />
         </section>
 
         {/* PROGRAMS: what we run, independent of who joins */}
-        <section id="programs" className="scroll-mt-4 bg-sand px-5 py-24 sm:px-8 sm:py-32">
+        <section id="programs" className="scroll-mt-4 bg-sand px-5 py-20 sm:px-8 sm:py-24">
           <div className="mx-auto max-w-7xl">
             <Reveal className="mb-14 max-w-3xl">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">The program</p>
@@ -292,7 +296,7 @@ export default function Home() {
         </section>
 
         {/* WAYS TO JOIN: the same programs, delivered at school or on weekends */}
-        <section id="join" className="relative scroll-mt-4 bg-linear-to-b from-sand to-white px-5 py-24 sm:px-8 sm:py-32">
+        <section id="join" className="relative scroll-mt-4 bg-linear-to-b from-sand to-white px-5 py-20 sm:px-8 sm:py-24">
           {/* nav targets; the switch picks the matching side */}
           <span id="schools" aria-hidden className="absolute top-0 scroll-mt-4" />
           <span id="students" aria-hidden className="absolute top-0 scroll-mt-4" />
@@ -321,7 +325,7 @@ export default function Home() {
         </section>
 
         {/* 4. MEET THE TEAM */}
-        <section id="team" className="scroll-mt-4 bg-white px-5 py-24 text-ink sm:px-8 sm:py-32">
+        <section id="team" className="scroll-mt-4 bg-white px-5 py-20 text-ink sm:px-8 sm:py-24">
           <div className="mx-auto max-w-6xl">
             <Reveal className="mx-auto max-w-2xl text-center">
               <p className="inline-flex items-center gap-2 rounded-full bg-accent/8 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-accent ring-1 ring-accent/15">
