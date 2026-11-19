@@ -25,27 +25,26 @@ export default function AboutSection() {
           <h2 className="section-title">
             About <span className="text-gradient">Us</span>
           </h2>
-          <div className="mt-10 space-y-6 border-l-2 border-accent/20 pl-6 text-lg leading-relaxed text-muted sm:pl-8 sm:text-xl sm:leading-relaxed">
-            <p className="text-ink">
-              Loonsclub is an{" "}
-              <span className="text-gradient font-semibold">
-                entrepreneurship community
-              </span>{" "}
-              for school students.
-            </p>
-            <p>
-              We are a team of{" "}
-              <span className="font-medium text-ink">
-                Founders, Investors, and Professors
-              </span>{" "}
-              with multiple decades of experience in the startup ecosystem.
-            </p>
-            <p>
-              Aimed at developing an entrepreneurial mindset, we nurture ideas
-              that challenge the status quo, grow them into viable solutions and
-              take them to the market.
-            </p>
-          </div>
+          {/* hyphens-auto keeps the justified lines from opening wide gaps between words */}
+          <p
+            lang="en"
+            className="mt-10 border-l-2 border-accent/20 pl-6 text-justify text-lg leading-relaxed text-muted hyphens-auto sm:pl-8 sm:text-xl sm:leading-relaxed"
+          >
+            Loonsclub is an{" "}
+            <span className="text-gradient font-semibold">
+              entrepreneurship community
+            </span>{" "}
+            for school students. We are a team of{" "}
+            <span className="font-medium text-ink">
+              Founders, Investors, and Professors
+            </span>{" "}
+            with multiple decades of experience in the startup ecosystem. Aimed
+            at developing an{" "}
+            {/* soft hyphens: browsers without a hyphenation dictionary can still break this long word */}
+            {"entre­pre­neur­ial"} mindset, we nurture ideas that
+            challenge the status quo, grow them into viable solutions and take
+            them to the market.
+          </p>
         </Reveal>
       </div>
 

@@ -130,6 +130,28 @@ export default async function ProgramPage({ params }: PageProps<"/programs/[slug
                   </h2>
                 </Reveal>
                 <Reveal delay={120}>
+                  {program.fee && (
+                    <div className="mb-8 flex flex-col gap-5 rounded-3xl bg-white/5 p-6 ring-1 ring-white/10 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/50">Program fee</p>
+                        <p className="mt-2 font-display text-4xl font-semibold tracking-tight text-white">
+                          {program.fee.amount}
+                        </p>
+                        {program.fee.note && (
+                          <p className="mt-1 text-sm text-white/60 first-letter:uppercase">{program.fee.note}</p>
+                        )}
+                      </div>
+                      <EnrollPopup
+                        program={program.title}
+                        className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium text-ink transition hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-12px_rgba(196,181,253,0.7)]"
+                      >
+                        Save a seat
+                        <span aria-hidden className="transition-transform group-hover:translate-x-1">
+                          →
+                        </span>
+                      </EnrollPopup>
+                    </div>
+                  )}
                   <p className="max-w-lg text-lg leading-relaxed text-white/70">{program.body}</p>
                 </Reveal>
               </div>
@@ -168,12 +190,6 @@ export default async function ProgramPage({ params }: PageProps<"/programs/[slug
               <h2 className="section-title mx-auto mt-4 max-w-3xl">
                 Ready to start <span className="text-gradient">something</span>?
               </h2>
-              {program.fee && (
-                <p className="mt-6 text-muted">
-                  Program fee: <span className="font-medium text-ink">{program.fee.amount}</span>
-                  {program.fee.note && <> ({program.fee.note})</>}
-                </p>
-              )}
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <EnrollPopup
                   program={program.title}
